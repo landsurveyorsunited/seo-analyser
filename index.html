@@ -37,6 +37,7 @@
 				<img src="/smart.png" class="pull-right" style="height: 80px">
 				<h1>SEO Analyser</h1>
 				<p>This app will tell you the key SEO metadata embedded in web pages.</p>
+				<p class="pull-right"><a href="" ng-click="openCSV()">Get all data as CSV</a> (beta!)</p>
 				<p>Built with <a href="https://import.io">structured APIs</a> powered by import.io</p>
 				<form class="form" ng-submit="addUrl(inputUrl)">
 					<div class="input-group">
@@ -68,7 +69,10 @@
 							</div>
 						</div>
 						<div ng-if="!row.loading && !row.failed">
-							<button class="btn btn-danger pull-right" ng-click="removeRow($index)"><i class="fa fa-trash-o"></i></button>
+							<div class="btn-group pull-right">
+								<button class="btn btn-default" ng-click="refreshRow(row)"><i class="fa fa-refresh"></i></button>
+								<button class="btn btn-danger" ng-click="removeRow($index)"><i class="fa fa-trash-o"></i></button>
+							</div>
 							<div class="row">
 								<div class="col-md-6">
 									<h2>Page metadata</h2>
@@ -123,7 +127,7 @@
 							<div class="row">
 								<div class="col-md-2" ng-repeat="heading in ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']">
 									<h3 class="center" style="text-transform: uppercase">{{heading}}</h3>
-									<p ng-repeat="h in row.data[heading].slice(0, row.states.expanded.headings ? undefined : 5)">
+									<p ng-repeat="h in row.data[heading].slice(0, row.states.expanded.headings ? undefined : 5) track by $index">
 										{{h}}
 									</p>
 									<p ng-if="row.data[heading].length < 1">{{noHeadings}}</p>
