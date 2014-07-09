@@ -19,6 +19,14 @@ body {
 	font-family: "Lato", sans-serif;
 }
 
+a,
+a:hover,
+a:visited,
+a:focus,
+a:active {
+	color: #e92076;
+}
+
 .heading {
 	margin-top: 20px;
 }

@@ -36,8 +36,8 @@
 			<div class="well heading">
 				<img src="/smart.png" class="pull-right" style="height: 80px">
 				<h1>SEO Analyser</h1>
+				<p class="pull-right"><button class="btn btn-default btn-sm" ng-click="openCSV()"><i class="fa fa-download"></i> CSV</button></p>
 				<p>This app will tell you the key SEO metadata embedded in web pages.</p>
-				<p class="pull-right"><a href="" ng-click="openCSV()">Get all data as CSV</a> (beta!)</p>
 				<p>Built with <a href="https://import.io">structured APIs</a> powered by import.io</p>
 				<form class="form" ng-submit="addUrl(inputUrl)">
 					<div class="input-group">
@@ -69,10 +69,6 @@
 							</div>
 						</div>
 						<div ng-if="!row.loading && !row.failed">
-							<div class="btn-group pull-right">
-								<button class="btn btn-default" ng-click="refreshRow(row)"><i class="fa fa-refresh"></i></button>
-								<button class="btn btn-danger" ng-click="removeRow($index)"><i class="fa fa-trash-o"></i></button>
-							</div>
 							<div class="row">
 								<div class="col-md-6">
 									<h2>Page metadata</h2>
@@ -91,7 +87,7 @@
 												<td>{{row.data.description || notPresent}}</td>
 											</tr>
 											<tr>
-												<th rowspan="{{row.states.expanded.keywords ? row.data.keywords.length : 5}}">Keywords</th>
+												<th rowspan="{{row.states.expanded.keywords ? row.data.keywords.length : 5}}">Keywords&nbsp;({{row.data.keywords.length || 0}})</th>
 												<td>{{row.data.keywords ? row.data.keywords[0] : notPresent}}</td>
 											</tr>
 											<tr ng-repeat="keyword in row.data.keywords.slice(0, row.states.expanded.keywords ? undefined : 5) track by $index" ng-if="!$first">
@@ -107,7 +103,11 @@
 									</table>
 								</div>
 								<div class="col-md-6">
-									<h2>Outbound links</h2>
+									<div class="btn-group pull-right">
+										<button class="btn btn-default" ng-click="refreshRow(row)"><i class="fa fa-refresh"></i></button>
+										<button class="btn btn-danger" ng-click="removeRow($index)"><i class="fa fa-trash-o"></i></button>
+									</div>
+									<h2>Outbound links ({{row.data.links.length || 0}})</h2>
 									<div class="cloud">
 										<span class="cloud-item" ng-repeat="link in row.data.links.slice(0, row.states.expanded.links ? undefined : 10) track by $index">
 											<a ng-href="{{link}}" target="_blank">{{row.data["links/_text"][$index] || notLabelled}}</a>
@@ -126,7 +126,7 @@
 							</div>
 							<div class="row">
 								<div class="col-md-2" ng-repeat="heading in ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']">
-									<h3 class="center" style="text-transform: uppercase">{{heading}}</h3>
+									<h3 class="center" style="text-transform: uppercase">{{heading}} ({{row.data[heading].length || 0}})</h3>
 									<p ng-repeat="h in row.data[heading].slice(0, row.states.expanded.headings ? undefined : 5) track by $index">
 										{{h}}
 									</p>
@@ -203,7 +203,7 @@
 									</table>
 								</div>
 								<div class="col-md-6">
-									<h2>Embedded images</h2>
+									<h2>Embedded images ({{row.data.images.length || 0}})</h2>
 									<div class="cloud">
 										<span class="cloud-item" ng-repeat="image in row.data.images.slice(0, row.states.expanded.images ? undefined : 5) track by $index">
 											<a ng-href="{{image}}" target="_blank"><img ng-src="{{image}}" style="max-width: 100px; max-height: 100px;"></a>
