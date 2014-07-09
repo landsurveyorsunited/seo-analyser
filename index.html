@@ -84,35 +84,52 @@
 												<td>{{row.data.description || notPresent}}</td>
 											</tr>
 											<tr>
-												<th rowspan="{{row.data.keywords.length}}">Keywords</th>
+												<th rowspan="{{row.states.expanded.keywords ? row.data.keywords.length : 5}}">Keywords</th>
 												<td>{{row.data.keywords ? row.data.keywords[0] : notPresent}}</td>
 											</tr>
 											<tr ng-repeat="keyword in row.data.keywords.slice(0, row.states.expanded.keywords ? undefined : 5) track by $index" ng-if="!$first">
 												<td>{{keyword}}</td>
 											</tr>
-											<tr ng-if="!row.states.expanded.keywords && row.data.keywords.length > 5">
-												<td colspan="2" class="center"><a href="" ng-click="row.states.expanded.keywords = true">More...</a></td>
+											<tr ng-if="row.data.keywords.length > 5">
+												<td colspan="2" class="center">
+													<a href="" ng-show="!row.states.expanded.keywords" ng-click="row.states.expanded.keywords = true">More...</a>
+													<a href="" ng-show="row.states.expanded.keywords" ng-click="row.states.expanded.keywords = false">Less...</a>
+												</td>
 											</tr>
 										</tbody>
 									</table>
 								</div>
 								<div class="col-md-6">
-									<h2>Robots headers</h2>
-									<table class="table table-condensed">
-										<tbody>
-											<tr>
-												<th rowspan="{{row.data.robots.length}}">Robots</th>
-												<td>{{row.data.robots ? row.data.robots[0] : notPresent}}</td>
-											</tr>
-											<tr ng-repeat="robot in row.data.robots track by $index" ng-if="!$first">
-												<td>{{robot}}</td>
-											</tr>
-											<tr>
-												<th>Revisit</th>
-												<td>{{row.data.revisit_after || notPresent}}</td>
-											</tr>
-										</tbody>
-									</table>
+									<h2>Outbound links</h2>
+									<div class="cloud">
+										<span class="cloud-item" ng-repeat="link in row.data.links.slice(0, row.states.expanded.links ? undefined : 10) track by $index">
+											<a ng-href="{{link}}" target="_blank">{{row.data["links/_text"][$index] || notLabelled}}</a>
+										</span>
+									</div>
+									<div ng-if="row.data.links.length > 10" class="center">
+										<a href="" ng-show="!row.states.expanded.links" ng-click="row.states.expanded.links = true">More...</a>
+										<a href="" ng-show="row.states.expanded.links" ng-click="row.states.expanded.links = false">Less...</a>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<h2 class="center">Headings</h2>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2" ng-repeat="heading in ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']">
+									<h3 class="center" style="text-transform: uppercase">{{heading}}</h3>
+									<p ng-repeat="h in row.data[heading].slice(0, row.states.expanded.headings ? undefined : 5)">
+										{{h}}
+									</p>
+									<p ng-if="row.data[heading].length < 1">{{noHeadings}}</p>
+								</div>
+							</div>
+							<div class="row" ng-if="hasMoreHeadings(row, 5)">
+								<div class="col-md-12 center">
+									<a href="" ng-show="!row.states.expanded.headings" ng-click="row.states.expanded.headings = true">More...</a>
+									<a href="" ng-show="row.states.expanded.headings" ng-click="row.states.expanded.headings = false">Less...</a>
 								</div>
 							</div>
 							<div class="row">
@@ -161,45 +178,34 @@
 							</div>
 							<div class="row">
 								<div class="col-md-6">
-									<h2>Outbound links</h2>
-									<div class="cloud">
-										<span class="cloud-item" ng-repeat="link in row.data.links.slice(0, row.states.expanded.links ? undefined : 10) track by $index">
-											<a ng-href="{{link}}" target="_blank">{{row.data["links/_text"][$index] || notLabelled}}</a>
-										</span>
-									</div>
-									<div ng-if="!row.states.expanded.links && row.data.links.length > 10" class="center">
-										<a href="" ng-click="row.states.expanded.links = true">More...</a>
-									</div>
+									<h2>Robots headers</h2>
+									<table class="table table-condensed">
+										<tbody>
+											<tr>
+												<th rowspan="{{row.data.robots.length}}">Robots</th>
+												<td>{{row.data.robots ? row.data.robots[0] : notPresent}}</td>
+											</tr>
+											<tr ng-repeat="robot in row.data.robots track by $index" ng-if="!$first">
+												<td>{{robot}}</td>
+											</tr>
+											<tr>
+												<th>Revisit</th>
+												<td>{{row.data.revisit_after || notPresent}}</td>
+											</tr>
+										</tbody>
+									</table>
 								</div>
 								<div class="col-md-6">
-									<h2>Embeded images</h2>
+									<h2>Embedded images</h2>
 									<div class="cloud">
 										<span class="cloud-item" ng-repeat="image in row.data.images.slice(0, row.states.expanded.images ? undefined : 5) track by $index">
 											<a ng-href="{{image}}" target="_blank"><img ng-src="{{image}}" style="max-width: 100px; max-height: 100px;"></a>
 										</span>
 									</div>
-									<div ng-if="!row.states.expanded.images && row.data.images.length > 5" class="center">
-										<a href="" ng-click="row.states.expanded.images = true">More...</a>
+									<div ng-if="row.data.images.length > 5" class="center">
+										<a href="" ng-show="!row.states.expanded.images" ng-click="row.states.expanded.images = true">More...</a>
+										<a href="" ng-show="row.states.expanded.images" ng-click="row.states.expanded.images = false">Less...</a>
 									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12">
-									<h2 class="center">Headings</h2>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-2" ng-repeat="heading in ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']">
-									<h3 class="center">{{heading}}</h3>
-									<p ng-repeat="h in row.data[heading].slice(0, row.states.expanded.headings ? undefined : 5)">
-										{{h}}
-									</p>
-									<p ng-if="row.data[heading].length < 1">{{noHeadings}}</p>
-								</div>
-							</div>
-							<div class="row" ng-if="!row.states.expanded.headings && hasMoreHeadings(row, 5)">
-								<div class="col-md-12 center">
-									<a href="" ng-click="row.states.expanded.headings = true">More...</a>
 								</div>
 							</div>
 						</div>

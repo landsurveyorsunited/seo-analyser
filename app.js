@@ -51,6 +51,11 @@ angular.module("seo").controller("SEO", function($scope, $timeout, safeApply, io
 					continue;
 				}
 			}
+			if (row.data.hasOwnProperty("robots")) {
+				if (Object.prototype.toString.call(row.data.robots) !== '[object Array]') {
+					row.data.robots = [row.data.robots];
+				}
+			}
 			row.loading = false;
 			row.failed = false;
 			safeApply($scope);
@@ -84,6 +89,9 @@ angular.module("seo").controller("SEO", function($scope, $timeout, safeApply, io
 				$scope.inputUrl = "";
 				return;
 			}
+		}
+		if (!inputUrl.match(/^https?:\/\//i)) {
+			inputUrl = "http://" + inputUrl;
 		}
 		var newRow = {
 			"url": inputUrl,
