@@ -38,7 +38,7 @@
 				<p>This app will tell you the key SEO metadata embedded in web pages.</p>
 				<form class="form" ng-submit="addUrl(inputUrl)">
 					<div class="input-group">
-						<input type="text" class="form-control" placeholder="Enter one or paste several URLs" ng-model="inputUrl">
+						<input type="text" class="form-control" autofocus placeholder="Enter one or paste several URLs" ng-model="inputUrl">
 						<span class="input-group-btn">
 							<button type="submit" class="btn btn-success"><i class="fa fa-plus"></i></button>
 						</span>
@@ -66,7 +66,128 @@
 							</div>
 						</div>
 						<div ng-if="!row.loading && !row.failed">
-							Derp
+							<div class="row">
+								<div class="col-md-6">
+									<h2>Page metadata</h2>
+									<table class="table table-condensed">
+										<tbody>
+											<tr>
+												<th>Title</th>
+												<td>{{row.data.title || notPresent}}</td>
+											</tr>
+											<tr>
+												<th>Author</th>
+												<td>{{row.data.author || notPresent}}</td>
+											</tr>
+											<tr>
+												<th>Description</th>
+												<td>{{row.data.description || notPresent}}</td>
+											</tr>
+											<tr>
+												<th rowspan="{{row.data.keywords.length}}">Keywords</th>
+												<td>{{row.data.keywords ? row.data.keywords[0] : notPresent}}</td>
+											</tr>
+											<tr ng-repeat="keyword in row.data.keywords track by $index" ng-if="!$first">
+												<td>{{keyword}}</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div class="col-md-6">
+									<h2>Robots headers</h2>
+									<table class="table table-condensed">
+										<tbody>
+											<tr>
+												<th rowspan="{{row.data.robots.length}}">Robots</th>
+												<td>{{row.data.robots ? row.data.robots[0] : notPresent}}</td>
+											</tr>
+											<tr ng-repeat="robot in row.data.robots track by $index" ng-if="!$first">
+												<td>{{robot}}</td>
+											</tr>
+											<tr>
+												<th>Revisit</th>
+												<td>{{row.data.revisit_after || notPresent}}</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<h2>Schema.org</h2>
+									<table class="table table-condensed">
+										<tbody>
+											<tr>
+												<th>Name</th>
+												<td>{{row.data.schema_name || notPresent}}</td>
+											</tr>
+											<tr>
+												<th>Description</th>
+												<td>{{row.data.schema_description || notPresent}}</td>
+											</tr>
+											<tr>
+												<th>Image</th>
+												<td>{{row.data.schema_image || notPresent}}</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div class="col-md-6">
+									<h2>Open Graph</h2>
+									<table class="table table-condensed">
+										<tbody>
+											<tr>
+												<th>Title</th>
+												<td>{{row.data.og_title || notPresent}}</td>
+											</tr>
+											<tr>
+												<th>Type</th>
+												<td>{{row.data.og_type || notPresent}}</td>
+											</tr>
+											<tr>
+												<th>Site name</th>
+												<td>{{row.data.og_sitename || notPresent}}</td>
+											</tr>
+											<tr>
+												<th>Image</th>
+												<td>{{row.data.og_image || notPresent}}</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<h2>Outbound links</h2>
+									<div class="cloud">
+										<span class="cloud-item" ng-repeat="link in row.data.links track by $index">
+											<a ng-href="{{link}}" target="_blank">{{row.data["links/_text"][$index] || notLabelled}}</a>
+										</span>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<h2>Embeded images</h2>
+									<div class="cloud">
+										<span class="cloud-item" ng-repeat="image in row.data.images track by $index">
+											<a ng-href="{{image}}" target="_blank"><img ng-src="{{image}}" style="max-width: 100px; max-height: 100px;"></a>
+										</span>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<h2 class="center">Headings</h2>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2" ng-repeat="heading in ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']">
+									<h3 class="center">{{heading}}</h3>
+									<p ng-repeat="h in row.data[heading]">
+										{{h}}
+									</p>
+									<p ng-if="row.data[heading].length < 1">{{noHeadings}}</p>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>

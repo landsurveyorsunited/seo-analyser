@@ -27,6 +27,10 @@ body {
 	margin-top: 0;
 }
 
+a:hover {
+	text-decoration: none;
+}
+
 .center {
 	text-align: center;
 }
@@ -43,16 +47,20 @@ body {
 	color: #ec6400;
 }
 
-.rows .row:first-child {
+.rows {
+	margin-bottom: 50px;
+}
+
+.rows > .row:first-child {
 	border-radius: 2px 2px 0 0;
 }
 
-.rows .row:last-child {
+.rows > .row:last-child {
 	border-radius: 0 0 2px 2px;
 	border-bottom-width: 1px;
 }
 
-.row {
+.rows > .row {
 	border: 1px solid #2e332e;
 	border-width: 1px 1px 0;
 	margin: 0 20px;
@@ -78,4 +86,12 @@ body {
 
 .row-body {
 	padding: 20px;
+}
+
+.cloud .cloud-item {
+	margin: 0 10px 10px 0;
+	padding: 5px 15px;
+	background-color: #e2e1dd;
+	border-radius: 2px;
+	display: inline-block;
 }

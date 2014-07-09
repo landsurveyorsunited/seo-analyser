@@ -13,6 +13,10 @@ angular.module("seo").controller("SEO", function($scope, safeApply, ioquery) {
 
 	$scope.rows = [];
 
+	$scope.notPresent = "(Not present)";
+	$scope.notLabelled = "(Unlabelled)";
+	$scope.noHeadings = "(No headings)";
+
 	$scope.refreshRow = function(row) {
 		if (row.loading) {
 			return;
@@ -25,6 +29,17 @@ angular.module("seo").controller("SEO", function($scope, safeApply, ioquery) {
 			}
 		}).then(function(data) {
 			row.data = data[0].data;
+			for (var i = 1; i <= 6; i++) {
+				var heading = "h" + i;
+				if (!row.data.hasOwnProperty(heading)) {
+					row.data[heading] = [];
+					continue;
+				}
+				if (Object.prototype.toString.call(row.data[heading]) !== '[object Array]') {
+					row.data[heading] = [row.data[heading]];
+					continue;
+				}
+			}
 			row.loading = false;
 			row.failed = false;
 			safeApply($scope);
@@ -47,9 +62,12 @@ angular.module("seo").controller("SEO", function($scope, safeApply, ioquery) {
 			"url": inputUrl,
 			"data": false,
 			"loading": false,
-			"expanded": false,
+			"expanded": true,
 			"failed": false
 		}
+		$scope.rows.map(function(row) {
+			row.expanded = false;
+		});
 		$scope.rows.unshift(newRow);
 		$scope.refreshRow(newRow);
 		$scope.inputUrl = "";
