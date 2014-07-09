@@ -28,6 +28,10 @@ angular.module("seo").controller("SEO", function($scope, $timeout, safeApply, io
 		}
 	}
 
+	$scope.removeRow = function(idx) {
+		$scope.rows.splice(idx, 1);
+	}
+
 	$scope.refreshRow = function(row) {
 		if (row.loading) {
 			return;
