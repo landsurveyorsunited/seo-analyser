@@ -7,7 +7,7 @@ importio.init({
 	}
 });
 
-angular.module("seo").controller("SEO", function($scope, safeApply, ioquery) {
+angular.module("seo").controller("SEO", function($scope, $timeout, safeApply, ioquery) {
 
 	$scope.inputUrl = "https://import.io";
 
@@ -16,6 +16,17 @@ angular.module("seo").controller("SEO", function($scope, safeApply, ioquery) {
 	$scope.notPresent = "(Not present)";
 	$scope.notLabelled = "(Unlabelled)";
 	$scope.noHeadings = "(No headings)";
+
+	$scope.inputChanged = function(url) {
+		var matches = url.match(/https?:\/\/[^\s;,]+/ig);
+		if (matches && matches.length > 1) {
+			collapseAllRows();
+			matches.map(function(url) {
+				$scope.addUrl(url, true);
+			});
+			$scope.inputUrl = "";
+		}
+	}
 
 	$scope.refreshRow = function(row) {
 		if (row.loading) {
@@ -51,7 +62,23 @@ angular.module("seo").controller("SEO", function($scope, safeApply, ioquery) {
 		});
 	}
 
-	$scope.addUrl = function(inputUrl) {
+	var collapseAllRows = function() {
+		$scope.rows.map(function(row) {
+			row.expanded = false;
+		});
+	}
+
+	$scope.hasMoreHeadings = function(row, count) {
+		for (var i = 1; i <= 6; i++) {
+			var heading = "h" + i;
+			if (row.data[heading].length > count) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	$scope.addUrl = function(inputUrl, bulk) {
 		for (var i = 0; i < $scope.rows.length; i++) {
 			if ($scope.rows[i].url == inputUrl) {
 				$scope.inputUrl = "";
@@ -63,15 +90,26 @@ angular.module("seo").controller("SEO", function($scope, safeApply, ioquery) {
 			"data": false,
 			"loading": false,
 			"expanded": true,
-			"failed": false
+			"failed": false,
+			"states": {
+				"expanded": {
+					"keywords": false,
+					"links": false,
+					"images": false,
+					"headings": false
+				}
+			}
 		}
-		$scope.rows.map(function(row) {
-			row.expanded = false;
-		});
+		if (!bulk) {
+			collapseAllRows();
+		}
 		$scope.rows.unshift(newRow);
 		$scope.refreshRow(newRow);
 		$scope.inputUrl = "";
 	}
+	$timeout(function() {
+		$scope.addUrl($scope.inputUrl);
+	}, 1000);
 
 });
 
