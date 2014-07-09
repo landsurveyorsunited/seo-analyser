@@ -1,0 +1,81 @@
+/*
+
+#231f20 : Ursela    | Dark grey
+#2e332e : Jafar     | Medium grey
+#6d6c68 : Scar      | Light grey
+#b6b3aa : Rafiki    | Lighter grey
+#e2e1dd : Gus       | Very light grey
+#ec3e82 : Dutchess  | Pink
+#4caee2 : Genie     | Blue
+#10c77e : Kaa       | Green
+#fcb236 : Flounder  | Yellow
+#ec6400 : Simba     | Orange
+#ec1f00 : Mushu     | Red
+#f2eee2 : Meeko     | Cream
+
+*/
+
+body {
+	font-family: "Lato", sans-serif;
+}
+
+.heading {
+	margin-top: 20px;
+}
+
+.heading h1 {
+	margin-top: 0;
+}
+
+.center {
+	text-align: center;
+}
+
+.loading i.fa-spin {
+  font-size: 96px;
+}
+
+.loading p {
+  font-size: 28px;
+}
+
+.warning {
+	color: #ec6400;
+}
+
+.rows .row:first-child {
+	border-radius: 2px 2px 0 0;
+}
+
+.rows .row:last-child {
+	border-radius: 0 0 2px 2px;
+	border-bottom-width: 1px;
+}
+
+.row {
+	border: 1px solid #2e332e;
+	border-width: 1px 1px 0;
+	margin: 0 20px;
+}
+
+.row-heading {
+	cursor: pointer;
+	background-color: #e2e1dd;
+	padding: 5px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	padding-right: 30px;
+}
+
+.row-heading i.pull-right {
+	margin-right: -20px;
+}
+
+.row.expanded .row-heading {
+	border-bottom: 1px solid #2e332e;
+}
+
+.row-body {
+	padding: 20px;
+}
