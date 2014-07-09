@@ -34,8 +34,10 @@
 
 		<div class="container" ng-controller="SEO">
 			<div class="well heading">
+				<img src="/smart.png" class="pull-right" style="height: 80px">
 				<h1>SEO Analyser</h1>
 				<p>This app will tell you the key SEO metadata embedded in web pages.</p>
+				<p>Built with <a href="https://import.io">structured APIs</a> powered by import.io</p>
 				<form class="form" ng-submit="addUrl(inputUrl)">
 					<div class="input-group">
 						<input type="text" class="form-control" autofocus placeholder="Enter one or paste several URLs" ng-model="inputUrl" ng-change="inputChanged(inputUrl)">
